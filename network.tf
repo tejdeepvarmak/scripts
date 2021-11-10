@@ -48,14 +48,36 @@ resource "azurerm_virtual_network" "demo-vnet" {
 
 # Creating Virtual Network Interface Card
 
-resource "azurerm_network_interface" "web-nic" {
-  name                = "web-nic"
+resource "azurerm_network_interface" "webnic" {
+  name                = "webnic"
   location            = azurerm_resource_group.DemoRG.location
   resource_group_name = azurerm_resource_group.DemoRG.name
 
   ip_configuration {
   name                          = "internal"
-  subnet_id                     = azurerm_subnet.example.id
+  subnet_id                     = azurerm_subnet.webnic.id
+  private_ip_address_allocation = "Dynamic"
+}
+
+resource "azurerm_network_interface" "dbnic" {
+  name                = "dbnic"
+  location            = azurerm_resource_group.DemoRG.location
+  resource_group_name = azurerm_resource_group.DemoRG.name
+
+  ip_configuration {
+  name                          = "internal"
+  subnet_id                     = azurerm_subnet.dbnic.id
+  private_ip_address_allocation = "Dynamic"
+}
+
+resource "azurerm_network_interface" "appnic" {
+  name                = "appnic"
+  location            = azurerm_resource_group.DemoRG.location
+  resource_group_name = azurerm_resource_group.DemoRG.name
+
+  ip_configuration {
+  name                          = "internal"
+  subnet_id                     = azurerm_subnet.appnic.id
   private_ip_address_allocation = "Dynamic"
 }
 
