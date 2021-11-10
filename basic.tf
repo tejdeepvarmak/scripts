@@ -12,7 +12,9 @@ provider "azurerm" {
 }
 
 
+# Creating a new resource group
 resource "azurerm_resource_group" "DemoRG" {
     name = "DemoRG"
     location = "East US"
 }
+
