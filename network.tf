@@ -22,20 +22,41 @@ resource "azurerm_virtual_network" "demo-vnet" {
 
 
   # Creating subnets
- subnet {
+ resource "azurerm_subnet" "web-subnet" {
      name = "web-subnet"
+     resource_group_name  = azurerm_resource_group.DemoRG.name
+     virtual_network_name = azurerm_virtual_network.DemoRG.name
      address_prefix = "10.1.0.0/24"
  }
 
- subnet {
+ resource "azurerm_subnet" "db-subnet" {
      name = "db-subnet"
+     resource_group_name  = azurerm_resource_group.DemoRG.name
+     virtual_network_name = azurerm_virtual_network.DemoRG.name
      address_prefix = "10.2.0.0/24"
  }
 
- subnet {
+ resource "azurerm_subnet" "app-subnet" {
      name = "app-subnet"
+     resource_group_name  = azurerm_resource_group.DemoRG.name
+     virtual_network_name = azurerm_virtual_network.DemoRG.name
      addres_prefix = "10.3.0.0/24"
  }
+}
+
+# Testing with restore functionality
+
+# Creating Virtual Network Interface Card
+
+resource "azurerm_network_interface" "web-nic" {
+  name                = "web-nic"
+  location            = azurerm_resource_group.DemoRG.location
+  resource_group_name = azurerm_resource_group.DemoRG.name
+
+  ip_configuration {
+  name                          = "internal"
+  subnet_id                     = azurerm_subnet.example.id
+  private_ip_address_allocation = "Dynamic"
 }
 
 
