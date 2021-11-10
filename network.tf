@@ -1,17 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source = "hashicorp/azurerm"
-      version = "2.84.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  # Configuration options
-}
-
-
 # Creating new network
 resource "azurerm_virtual_network" "demo-vnet" {
   name                = "demo-vnet"
@@ -25,22 +11,22 @@ resource "azurerm_virtual_network" "demo-vnet" {
  resource "azurerm_subnet" "web-subnet" {
      name = "web-subnet"
      resource_group_name  = azurerm_resource_group.DemoRG.name
-     virtual_network_name = azurerm_virtual_network.DemoRG.name
-     address_prefix = "10.1.0.0/24"
+     virtual_network_name = azurerm_virtual_network.demo-vnet.name
+     address_prefix = "10.1.0.0"
  }
 
  resource "azurerm_subnet" "db-subnet" {
      name = "db-subnet"
      resource_group_name  = azurerm_resource_group.DemoRG.name
-     virtual_network_name = azurerm_virtual_network.DemoRG.name
-     address_prefix = "10.2.0.0/24"
+     virtual_network_name = azurerm_virtual_network.demo-vnet.name
+     address_prefix = "10.2.0.0"
  }
 
  resource "azurerm_subnet" "app-subnet" {
      name = "app-subnet"
      resource_group_name  = azurerm_resource_group.DemoRG.name
-     virtual_network_name = azurerm_virtual_network.DemoRG.name
-     addres_prefix = "10.3.0.0/24"
+     virtual_network_name = azurerm_virtual_network.demo-vnet.name
+     addres_prefix = "10.3.0.0"
  }
 }
 
@@ -58,6 +44,7 @@ resource "azurerm_network_interface" "webnic" {
   subnet_id                     = azurerm_subnet.webnic.id
   private_ip_address_allocation = "Dynamic"
 }
+}
 
 resource "azurerm_network_interface" "dbnic" {
   name                = "dbnic"
@@ -68,6 +55,7 @@ resource "azurerm_network_interface" "dbnic" {
   name                          = "internal"
   subnet_id                     = azurerm_subnet.dbnic.id
   private_ip_address_allocation = "Dynamic"
+}
 }
 
 resource "azurerm_network_interface" "appnic" {
@@ -80,7 +68,7 @@ resource "azurerm_network_interface" "appnic" {
   subnet_id                     = azurerm_subnet.appnic.id
   private_ip_address_allocation = "Dynamic"
 }
-
+}
 
 # Creating Network Security Groups
 
